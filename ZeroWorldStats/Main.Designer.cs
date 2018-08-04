@@ -43,6 +43,8 @@
 			this.label5 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
 			this.openDlg_WorldReqFile = new System.Windows.Forms.OpenFileDialog();
+			this.dd_ModeMrq = new System.Windows.Forms.ComboBox();
+			this.label2 = new System.Windows.Forms.Label();
 			this.flowLayoutPanel2.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -78,9 +80,9 @@
 			this.flowLayoutPanel2.Controls.Add(this.lbl_PlanConnectionCnt);
 			this.flowLayoutPanel2.Controls.Add(this.btn_GetPlanHubCnt);
 			this.flowLayoutPanel2.Controls.Add(this.lbl_PlanHubCnt);
-			this.flowLayoutPanel2.Location = new System.Drawing.Point(12, 67);
+			this.flowLayoutPanel2.Location = new System.Drawing.Point(12, 95);
 			this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-			this.flowLayoutPanel2.Size = new System.Drawing.Size(373, 117);
+			this.flowLayoutPanel2.Size = new System.Drawing.Size(373, 119);
 			this.flowLayoutPanel2.TabIndex = 3;
 			// 
 			// btn_GetObjectCnt
@@ -196,11 +198,35 @@
 			this.openDlg_WorldReqFile.InitialDirectory = "C:\\BF2_ModTools";
 			this.openDlg_WorldReqFile.RestoreDirectory = true;
 			// 
+			// dd_ModeMrq
+			// 
+			this.dd_ModeMrq.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.dd_ModeMrq.FormattingEnabled = true;
+			this.dd_ModeMrq.Items.AddRange(new object[] {
+            "[Base]"});
+			this.dd_ModeMrq.Location = new System.Drawing.Point(125, 68);
+			this.dd_ModeMrq.Name = "dd_ModeMrq";
+			this.dd_ModeMrq.Size = new System.Drawing.Size(342, 21);
+			this.dd_ModeMrq.TabIndex = 7;
+			this.dd_ModeMrq.SelectionChangeCommitted += new System.EventHandler(this.dd_ModeMrq_SelectionChangeCommitted);
+			// 
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(12, 71);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(65, 13);
+			this.label2.TabIndex = 8;
+			this.label2.Text = "Mode MRQ:";
+			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(479, 196);
+			this.ClientSize = new System.Drawing.Size(479, 226);
+			this.Controls.Add(this.label2);
+			this.Controls.Add(this.dd_ModeMrq);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.label5);
 			this.Controls.Add(this.txt_WorldPlnFileName);
@@ -232,6 +258,8 @@
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.OpenFileDialog openDlg_WorldReqFile;
+		private System.Windows.Forms.ComboBox dd_ModeMrq;
+		private System.Windows.Forms.Label label2;
 	}
 }
 

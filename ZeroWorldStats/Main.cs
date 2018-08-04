@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -27,6 +28,7 @@ namespace ZeroWorldStats
 
 		public Counts counts = new Counts();
 		public string worldReqFilePath;
+		public string selectedModeMrq;
 
 		private void Main_Load(object sender, EventArgs e)
 		{
@@ -102,24 +104,103 @@ namespace ZeroWorldStats
 			label.Text = count.ToString();
 		}
 
+		/// <summary>
+		/// Gets the sum of objects from the WLD file and all used LYR files.
+		/// </summary>
 		private void GetObjectCount()
 		{
+			List<string> worldFiles = GetWorldFiles(worldReqFilePath, selectedModeMrq);
+			List<string> lyrFiles = new List<string>();
+			DirectoryInfo directoryInfo = new DirectoryInfo(worldReqFilePath);
+			
+			foreach (string file in worldFiles)
+			{
+				string lyrPath = string.Concat(directoryInfo.Parent, "\\", file, ".lyr");
+				string wldPath = string.Concat(directoryInfo.Parent, "\\", file, ".wld");
 
+				// Try to find the LYR/WLD file and add it
+				if (File.Exists(lyrPath))
+				{
+					Debug.WriteLine("Adding LYR file at path: " + lyrPath);
+					lyrFiles.Add(lyrPath);
+				}
+				else if (File.Exists(wldPath))
+				{
+					Debug.WriteLine("Adding WLD file at path: " + wldPath);
+					lyrFiles.Add(wldPath);
+				}
+				else
+				{
+					Debug.WriteLine("Failed to find LYR file at path: " + lyrPath);
+					Debug.WriteLine("Failed to find WLD file at path: " + wldPath);
+				}
+			}
+
+			// add '.lyr' to each file in lyrFiles
+			// try to resolve file path for lyr files based on world req file path
+			// count the instances of ' Object(" ' in each lyr file
+			
 		}
 
+		/// <summary>
+		/// Gets the sum of regions from all used RGN files.
+		/// </summary>
 		private void GetRegionCount()
 		{
+			List<string> worldFiles = GetWorldFiles(worldReqFilePath, selectedModeMrq);
+			List<string> rgnFiles = new List<string>();
+			DirectoryInfo directoryInfo = new DirectoryInfo(worldReqFilePath);
 
+			foreach (string file in worldFiles)
+			{
+				string path = string.Concat(directoryInfo.Parent, "\\", file, ".rgn");
+
+				if (File.Exists(path))
+				{
+					Debug.WriteLine("Adding RGN file at path: " + path);
+					rgnFiles.Add(path);
+				}
+				else
+				{
+					Debug.WriteLine("Failed to find RGN file at path: " + path);
+				}
+			}
+
+			// add '.rgn' to each file in rgnFiles
+			// try to resolve file path for lyr files based on world req file path
+			// count the instances of ' Region(" ' in each rgn file
 		}
 
+		/// <summary>
+		/// Gets the sum of planning connections from the specified PLN file.
+		/// </summary>
 		private void GetPlanConnectionCount()
 		{
-
+			
 		}
 
+		/// <summary>
+		/// Gets the sum of planning hubs from the specified PLN file.
+		/// </summary>
 		private void GetPlanHubCount()
 		{
 
+		}
+
+		private List<string> GetWorldFiles(string reqFile, string modeName)
+		{
+			List<string> worldFiles = new List<string>();
+
+			// add list of files from "world" section in req
+			// add list of files from "world" section in selected mode mrq
+
+			return worldFiles;
+		}
+
+		private void dd_ModeMrq_SelectionChangeCommitted(object sender, EventArgs e)
+		{
+			selectedModeMrq = (string)dd_ModeMrq.SelectedItem;
+			Debug.WriteLine(selectedModeMrq);
 		}
 	}
 }

@@ -17,11 +17,26 @@ namespace ZeroWorldStats
 			InitializeComponent();
 		}
 
+		public struct Counts
+		{
+			public int objectCount;
+			public int regionCount;
+			public int planConnectionCount;
+			public int planHubCount;
+		};
+
+		public Counts counts = new Counts();
 		public string worldReqFilePath;
 
 		private void Main_Load(object sender, EventArgs e)
 		{
-			ResetCountLabels();
+			counts.objectCount = 0;
+			counts.regionCount = 0;
+			counts.planConnectionCount = 0;
+			counts.planHubCount = 0;
+
+			ResetCounts();
+			SetCountLabels();
 		}
 
 		private void btn_Browse_Click(object sender, EventArgs e)
@@ -53,12 +68,58 @@ namespace ZeroWorldStats
 
 		}
 
-		private void ResetCountLabels()
+		private void ResetCounts()
 		{
-			lbl_ObjectCnt.Text = "0";
-			lbl_RegionCnt.Text = "0";
-			lbl_PlanConnectionCnt.Text = "0";
-			lbl_PlanHubCnt.Text = "0";
+			ResetCount(ref counts.objectCount);
+			ResetCount(ref counts.regionCount);
+			ResetCount(ref counts.planConnectionCount);
+			ResetCount(ref counts.planHubCount);
+		}
+
+		private void ResetCount(ref int count)
+		{
+			count = 0;
+		}
+
+		private void SetCounts()
+		{
+			GetObjectCount();
+			GetRegionCount();
+			GetPlanConnectionCount();
+			GetPlanHubCount();
+		}
+
+		private void SetCountLabels()
+		{
+			SetCountLabel(lbl_ObjectCnt, counts.objectCount);
+			SetCountLabel(lbl_RegionCnt, counts.regionCount);
+			SetCountLabel(lbl_PlanConnectionCnt, counts.planConnectionCount);
+			SetCountLabel(lbl_PlanHubCnt, counts.planHubCount);
+		}
+
+		private void SetCountLabel(Label label, int count)
+		{
+			label.Text = count.ToString();
+		}
+
+		private void GetObjectCount()
+		{
+
+		}
+
+		private void GetRegionCount()
+		{
+
+		}
+
+		private void GetPlanConnectionCount()
+		{
+
+		}
+
+		private void GetPlanHubCount()
+		{
+
 		}
 	}
 }

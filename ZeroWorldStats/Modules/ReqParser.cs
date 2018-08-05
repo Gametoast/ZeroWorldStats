@@ -24,11 +24,11 @@ namespace ZeroWorldStats
 
 
 		/// <summary>
-		/// Returns the contents of a given chunk name in a REQ file.
+		/// Returns the contents of a given chunk name in a REQ (or MRQ) file.
 		/// </summary>
-		/// <param name="reqFilePath">File path of REQ file to parse chunk from.</param>
-		/// <param name="reqChunkName">Name of REQ chunk to parse.</param>
-		/// <returns>Contents of parsed REQ chunk.</returns>
+		/// <param name="reqFilePath">File path of file to parse chunk from.</param>
+		/// <param name="reqChunkName">Name of REQN chunk to parse.</param>
+		/// <returns>Contents of parsed REQN chunk.</returns>
 		public static ReqChunk ParseChunk(string reqFilePath, string reqChunkName)
 		{
 			string ParseLine(string line)
@@ -64,7 +64,7 @@ namespace ZeroWorldStats
 
 			FileInfo fileInfo = new FileInfo(reqFilePath);
 
-			if (fileInfo.Extension != ".req")
+			if (fileInfo.Extension.ToLower() != ".req" && fileInfo.Extension.ToLower() != ".mrq")
 			{
 				var message = "ERROR! File extension is " + fileInfo.Extension;
 				Trace.WriteLine(message);

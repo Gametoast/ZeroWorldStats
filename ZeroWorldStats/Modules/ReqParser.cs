@@ -24,18 +24,6 @@ namespace ZeroWorldStats
 
 
 		/// <summary>
-		/// Returns the extension of the file at the given path.  
-		/// Example: Inputting "C:\Documents\foo.bar" or simply "foo.bar" would return "bar".
-		/// </summary>
-		/// <param name="filePath">File path or name to get extension from.</param>
-		/// <returns>File extension of given file (e.g., "txt")</returns>
-		public static string GetFileExtension(string filePath)
-		{
-			return filePath.ToLower().Substring(filePath.LastIndexOf(".") + 1);
-		}
-
-
-		/// <summary>
 		/// Returns the contents of a given chunk name in a REQ file.
 		/// </summary>
 		/// <param name="reqFilePath">File path of REQ file to parse chunk from.</param>

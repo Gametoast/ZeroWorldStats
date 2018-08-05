@@ -91,24 +91,14 @@ namespace ZeroWorldStats
 		private void PopulateModeList()
 		{
 			ReqChunk reqChunk = ReqParser.ParseChunk(worldReqFilePath, "lvl");
-			List<string> worldModeFiles = reqChunk.ResolveContentsAsFiles(worldDirectory, ".mrq");
 			List<string> dropdownModeNames = new List<string>();
 
 			worldModes.Clear();
-
-			// Create a dictionary of modes where the key is the mode's name ("abc_conquest") and the value is the mrq file path
-			foreach (string modeFile in worldModeFiles)
-			{
-				FileInfo fileInfo = new FileInfo(modeFile);
-				string modeName = fileInfo.Name.Substring(0, fileInfo.Name.Length - 4);
-
-				worldModes.Add(modeName, modeFile);
-				dropdownModeNames.Add(modeName);
-			}
+			worldModes = reqChunk.ResolveContentsAsFiles(worldDirectory, ".mrq");
 
 			dd_ModeMrq.Items.Clear();
 			dd_ModeMrq.Items.Add(DROPDOWN_MODES_BASE);
-			dd_ModeMrq.Items.AddRange(dropdownModeNames.ToArray());
+			dd_ModeMrq.Items.AddRange(worldModes.Keys.ToArray());
 		}
 
 		private void ResetCounts()

@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using ZeroWorldStats.Modules;
 
 namespace ZeroWorldStats
 {
@@ -52,7 +53,8 @@ namespace ZeroWorldStats
 
 		private void btn_GetObjectCnt_Click(object sender, EventArgs e)
 		{
-
+			ReqChunk reqChunk = ReqParser.ParseChunk(worldReqFilePath, "world");
+			reqChunk.PrintAll();
 		}
 
 		private void btn_GetRegionCnt_Click(object sender, EventArgs e)
@@ -68,6 +70,12 @@ namespace ZeroWorldStats
 		private void btn_GetPlanHubCnt_Click(object sender, EventArgs e)
 		{
 
+		}
+
+		private void dd_ModeMrq_SelectionChangeCommitted(object sender, EventArgs e)
+		{
+			selectedModeMrq = (string)dd_ModeMrq.SelectedItem;
+			Debug.WriteLine(selectedModeMrq);
 		}
 
 		private void ResetCounts()
@@ -195,12 +203,6 @@ namespace ZeroWorldStats
 			// add list of files from "world" section in selected mode mrq
 
 			return worldFiles;
-		}
-
-		private void dd_ModeMrq_SelectionChangeCommitted(object sender, EventArgs e)
-		{
-			selectedModeMrq = (string)dd_ModeMrq.SelectedItem;
-			Debug.WriteLine(selectedModeMrq);
 		}
 	}
 }

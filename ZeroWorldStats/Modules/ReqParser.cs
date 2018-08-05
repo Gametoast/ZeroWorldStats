@@ -35,6 +35,8 @@ namespace ZeroWorldStats
 			{
 				if (line.Contains("\""))
 				{
+					// TODO: should probably refactor this to use the Trim method
+					// Get the contents in the quotation marks
 					return line.Substring(line.IndexOf("\"") + 1, line.LastIndexOf("\"") - line.IndexOf("\"") - 1);
 				}
 				else

@@ -35,7 +35,7 @@ namespace ZeroWorldStats.Modules
 			Contents.Add(file);
 		}
 
-		// TODO eventually we should automatically get the file extensions based on the chunk name (ex: "texture" would use ".tga")
+		// TODO: eventually we should automatically get the file extensions based on the chunk name (ex: "texture" would use ".tga")
 		/// <summary>
 		/// Return a dictionary of file paths of the files required in this chunk.
 		/// </summary>

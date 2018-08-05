@@ -35,23 +35,24 @@
 			this.lbl_ObjectCnt = new System.Windows.Forms.Label();
 			this.btn_GetRegionCnt = new System.Windows.Forms.Button();
 			this.lbl_RegionCnt = new System.Windows.Forms.Label();
+			this.btn_GetPlanConnectionCnt = new System.Windows.Forms.Button();
+			this.lbl_PlanConnectionCnt = new System.Windows.Forms.Label();
 			this.btn_GetPlanHubCnt = new System.Windows.Forms.Button();
 			this.lbl_PlanHubCnt = new System.Windows.Forms.Label();
-			this.lbl_PlanConnectionCnt = new System.Windows.Forms.Label();
-			this.btn_GetPlanConnectionCnt = new System.Windows.Forms.Button();
 			this.txt_WorldPlnFileName = new System.Windows.Forms.TextBox();
 			this.label5 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
 			this.openDlg_WorldReqFile = new System.Windows.Forms.OpenFileDialog();
 			this.dd_ModeMrq = new System.Windows.Forms.ComboBox();
 			this.label2 = new System.Windows.Forms.Label();
+			this.btn_GetAllCounts = new System.Windows.Forms.Button();
 			this.flowLayoutPanel2.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// btn_Browse
 			// 
 			this.btn_Browse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btn_Browse.Location = new System.Drawing.Point(392, 12);
+			this.btn_Browse.Location = new System.Drawing.Point(392, 10);
 			this.btn_Browse.Name = "btn_Browse";
 			this.btn_Browse.Size = new System.Drawing.Size(75, 23);
 			this.btn_Browse.TabIndex = 1;
@@ -82,7 +83,7 @@
 			this.flowLayoutPanel2.Controls.Add(this.lbl_PlanHubCnt);
 			this.flowLayoutPanel2.Location = new System.Drawing.Point(12, 95);
 			this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-			this.flowLayoutPanel2.Size = new System.Drawing.Size(373, 119);
+			this.flowLayoutPanel2.Size = new System.Drawing.Size(373, 117);
 			this.flowLayoutPanel2.TabIndex = 3;
 			// 
 			// btn_GetObjectCnt
@@ -90,7 +91,7 @@
 			this.btn_GetObjectCnt.Location = new System.Drawing.Point(3, 3);
 			this.btn_GetObjectCnt.Name = "btn_GetObjectCnt";
 			this.btn_GetObjectCnt.Size = new System.Drawing.Size(154, 23);
-			this.btn_GetObjectCnt.TabIndex = 3;
+			this.btn_GetObjectCnt.TabIndex = 10;
 			this.btn_GetObjectCnt.Text = "Get Object Count";
 			this.btn_GetObjectCnt.UseVisualStyleBackColor = true;
 			this.btn_GetObjectCnt.Click += new System.EventHandler(this.btn_GetObjectCnt_Click);
@@ -110,7 +111,7 @@
 			this.btn_GetRegionCnt.Location = new System.Drawing.Point(3, 32);
 			this.btn_GetRegionCnt.Name = "btn_GetRegionCnt";
 			this.btn_GetRegionCnt.Size = new System.Drawing.Size(154, 23);
-			this.btn_GetRegionCnt.TabIndex = 4;
+			this.btn_GetRegionCnt.TabIndex = 11;
 			this.btn_GetRegionCnt.Text = "Get Region Count";
 			this.btn_GetRegionCnt.UseVisualStyleBackColor = true;
 			this.btn_GetRegionCnt.Click += new System.EventHandler(this.btn_GetRegionCnt_Click);
@@ -125,12 +126,32 @@
 			this.lbl_RegionCnt.Text = "regionCount";
 			this.lbl_RegionCnt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
+			// btn_GetPlanConnectionCnt
+			// 
+			this.btn_GetPlanConnectionCnt.Location = new System.Drawing.Point(3, 61);
+			this.btn_GetPlanConnectionCnt.Name = "btn_GetPlanConnectionCnt";
+			this.btn_GetPlanConnectionCnt.Size = new System.Drawing.Size(154, 23);
+			this.btn_GetPlanConnectionCnt.TabIndex = 12;
+			this.btn_GetPlanConnectionCnt.Text = "Get Plan Connection Count";
+			this.btn_GetPlanConnectionCnt.UseVisualStyleBackColor = true;
+			this.btn_GetPlanConnectionCnt.Click += new System.EventHandler(this.btn_GetPlanConnectionCnt_Click);
+			// 
+			// lbl_PlanConnectionCnt
+			// 
+			this.lbl_PlanConnectionCnt.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.lbl_PlanConnectionCnt.Location = new System.Drawing.Point(163, 66);
+			this.lbl_PlanConnectionCnt.Name = "lbl_PlanConnectionCnt";
+			this.lbl_PlanConnectionCnt.Size = new System.Drawing.Size(137, 13);
+			this.lbl_PlanConnectionCnt.TabIndex = 5;
+			this.lbl_PlanConnectionCnt.Text = "planConnectionCount";
+			this.lbl_PlanConnectionCnt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			// 
 			// btn_GetPlanHubCnt
 			// 
 			this.btn_GetPlanHubCnt.Location = new System.Drawing.Point(3, 90);
 			this.btn_GetPlanHubCnt.Name = "btn_GetPlanHubCnt";
 			this.btn_GetPlanHubCnt.Size = new System.Drawing.Size(154, 23);
-			this.btn_GetPlanHubCnt.TabIndex = 6;
+			this.btn_GetPlanHubCnt.TabIndex = 13;
 			this.btn_GetPlanHubCnt.Text = "Get Plan Hub Count";
 			this.btn_GetPlanHubCnt.UseVisualStyleBackColor = true;
 			this.btn_GetPlanHubCnt.Click += new System.EventHandler(this.btn_GetPlanHubCnt_Click);
@@ -144,26 +165,6 @@
 			this.lbl_PlanHubCnt.TabIndex = 7;
 			this.lbl_PlanHubCnt.Text = "planHubCount";
 			this.lbl_PlanHubCnt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			// 
-			// lbl_PlanConnectionCnt
-			// 
-			this.lbl_PlanConnectionCnt.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.lbl_PlanConnectionCnt.Location = new System.Drawing.Point(163, 66);
-			this.lbl_PlanConnectionCnt.Name = "lbl_PlanConnectionCnt";
-			this.lbl_PlanConnectionCnt.Size = new System.Drawing.Size(137, 13);
-			this.lbl_PlanConnectionCnt.TabIndex = 5;
-			this.lbl_PlanConnectionCnt.Text = "planConnectionCount";
-			this.lbl_PlanConnectionCnt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			// 
-			// btn_GetPlanConnectionCnt
-			// 
-			this.btn_GetPlanConnectionCnt.Location = new System.Drawing.Point(3, 61);
-			this.btn_GetPlanConnectionCnt.Name = "btn_GetPlanConnectionCnt";
-			this.btn_GetPlanConnectionCnt.Size = new System.Drawing.Size(154, 23);
-			this.btn_GetPlanConnectionCnt.TabIndex = 5;
-			this.btn_GetPlanConnectionCnt.Text = "Get Plan Connection Count";
-			this.btn_GetPlanConnectionCnt.UseVisualStyleBackColor = true;
-			this.btn_GetPlanConnectionCnt.Click += new System.EventHandler(this.btn_GetPlanConnectionCnt_Click);
 			// 
 			// txt_WorldPlnFileName
 			// 
@@ -207,8 +208,8 @@
             "[Base]"});
 			this.dd_ModeMrq.Location = new System.Drawing.Point(125, 68);
 			this.dd_ModeMrq.Name = "dd_ModeMrq";
-			this.dd_ModeMrq.Size = new System.Drawing.Size(342, 21);
-			this.dd_ModeMrq.TabIndex = 7;
+			this.dd_ModeMrq.Size = new System.Drawing.Size(261, 21);
+			this.dd_ModeMrq.TabIndex = 3;
 			this.dd_ModeMrq.SelectionChangeCommitted += new System.EventHandler(this.dd_ModeMrq_SelectionChangeCommitted);
 			// 
 			// label2
@@ -220,11 +221,23 @@
 			this.label2.TabIndex = 8;
 			this.label2.Text = "Mode MRQ:";
 			// 
+			// btn_GetAllCounts
+			// 
+			this.btn_GetAllCounts.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.btn_GetAllCounts.Location = new System.Drawing.Point(392, 66);
+			this.btn_GetAllCounts.Name = "btn_GetAllCounts";
+			this.btn_GetAllCounts.Size = new System.Drawing.Size(75, 23);
+			this.btn_GetAllCounts.TabIndex = 4;
+			this.btn_GetAllCounts.Text = "Get All";
+			this.btn_GetAllCounts.UseVisualStyleBackColor = true;
+			this.btn_GetAllCounts.Click += new System.EventHandler(this.btn_GetAllCounts_Click);
+			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(479, 226);
+			this.ClientSize = new System.Drawing.Size(479, 224);
+			this.Controls.Add(this.btn_GetAllCounts);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.dd_ModeMrq);
 			this.Controls.Add(this.label1);
@@ -260,6 +273,7 @@
 		private System.Windows.Forms.OpenFileDialog openDlg_WorldReqFile;
 		private System.Windows.Forms.ComboBox dd_ModeMrq;
 		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.Button btn_GetAllCounts;
 	}
 }
 

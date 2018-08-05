@@ -27,13 +27,21 @@ namespace ZeroWorldStats
 			public int planHubCount;
 		};
 
+		public enum StringMatchType
+		{
+			StartsWith,
+			EndsWith,
+			Contains
+		};
+
 		public const string DROPDOWN_MODES_BASE = "[Base]";
 
 		public Counts counts = new Counts();
 		public string worldReqFilePath;
 		public string worldDirectory;
 		public Dictionary<string, string> worldModes = new Dictionary<string, string>();
-		public string selectedModeMrq;
+		public Dictionary<string, string> worldLayers = new Dictionary<string, string>();
+		public string selectedModeMrq = DROPDOWN_MODES_BASE;
 
 		private void Main_Load(object sender, EventArgs e)
 		{
@@ -57,19 +65,23 @@ namespace ZeroWorldStats
 				worldDirectory = fileInfo.DirectoryName;
 
 				PopulateModeList();
-				dd_ModeMrq.SelectedIndex = 0;
+				ResetSelectedMode();
 			}
+		}
+
+		private void btn_GetAllCounts_Click(object sender, EventArgs e)
+		{
+			GetCounts();
 		}
 
 		private void btn_GetObjectCnt_Click(object sender, EventArgs e)
 		{
-			ReqChunk reqChunk = ReqParser.ParseChunk(worldReqFilePath, "world");
-			reqChunk.PrintAll();
+			GetObjectCount();
 		}
 
 		private void btn_GetRegionCnt_Click(object sender, EventArgs e)
 		{
-
+			GetRegionCount();
 		}
 
 		private void btn_GetPlanConnectionCnt_Click(object sender, EventArgs e)
@@ -88,17 +100,27 @@ namespace ZeroWorldStats
 			Debug.WriteLine(selectedModeMrq);
 		}
 
+		private void ResetSelectedMode()
+		{
+			dd_ModeMrq.SelectedIndex = 0;
+			selectedModeMrq = (string)dd_ModeMrq.SelectedItem;
+		}
+
 		private void PopulateModeList()
 		{
 			ReqChunk reqChunk = ReqParser.ParseChunk(worldReqFilePath, "lvl");
 			List<string> dropdownModeNames = new List<string>();
-
+			
 			worldModes.Clear();
-			worldModes = reqChunk.ResolveContentsAsFiles(worldDirectory, ".mrq");
+			worldModes.Add(DROPDOWN_MODES_BASE, DROPDOWN_MODES_BASE);
+
+			var resolvedFiles = reqChunk.ResolveContentsAsFiles(worldDirectory, ".mrq");
+			resolvedFiles.ToList().ForEach(x => worldModes[x.Key] = x.Value);
 
 			dd_ModeMrq.Items.Clear();
-			dd_ModeMrq.Items.Add(DROPDOWN_MODES_BASE);
 			dd_ModeMrq.Items.AddRange(worldModes.Keys.ToArray());
+
+			ResetSelectedMode();
 		}
 
 		private void ResetCounts()
@@ -114,7 +136,7 @@ namespace ZeroWorldStats
 			count = 0;
 		}
 
-		private void SetCounts()
+		private void GetCounts()
 		{
 			GetObjectCount();
 			GetRegionCount();
@@ -140,37 +162,18 @@ namespace ZeroWorldStats
 		/// </summary>
 		private void GetObjectCount()
 		{
-			List<string> worldFiles = GetWorldFiles(worldReqFilePath, selectedModeMrq);
-			List<string> lyrFiles = new List<string>();
-			DirectoryInfo directoryInfo = new DirectoryInfo(worldReqFilePath);
-			
-			foreach (string file in worldFiles)
-			{
-				string lyrPath = string.Concat(directoryInfo.Parent, "\\", file, ".lyr");
-				string wldPath = string.Concat(directoryInfo.Parent, "\\", file, ".wld");
+			List<string> objectFiles = GetWorldChunkFilePaths(worldReqFilePath, worldModes[selectedModeMrq], new string[] { ".wld", ".lyr" });
 
-				// Try to find the LYR/WLD file and add it
-				if (File.Exists(lyrPath))
-				{
-					Debug.WriteLine("Adding LYR file at path: " + lyrPath);
-					lyrFiles.Add(lyrPath);
-				}
-				else if (File.Exists(wldPath))
-				{
-					Debug.WriteLine("Adding WLD file at path: " + wldPath);
-					lyrFiles.Add(wldPath);
-				}
-				else
-				{
-					Debug.WriteLine("Failed to find LYR file at path: " + lyrPath);
-					Debug.WriteLine("Failed to find WLD file at path: " + wldPath);
-				}
+			ResetCount(ref counts.objectCount);
+			
+			// Count the objects in each object file
+			foreach (string filePath in objectFiles)
+			{
+				Debug.WriteLine("Counting number of objects in file at path: " + filePath);
+				counts.objectCount += GetNumberOfStringInstancesInFile(filePath, "Object(\"", StringMatchType.StartsWith);
 			}
 
-			// add '.lyr' to each file in lyrFiles
-			// try to resolve file path for lyr files based on world req file path
-			// count the instances of ' Object(" ' in each lyr file
-			
+			SetCountLabel(lbl_ObjectCnt, counts.objectCount);
 		}
 
 		/// <summary>
@@ -178,28 +181,18 @@ namespace ZeroWorldStats
 		/// </summary>
 		private void GetRegionCount()
 		{
-			List<string> worldFiles = GetWorldFiles(worldReqFilePath, selectedModeMrq);
-			List<string> rgnFiles = new List<string>();
-			DirectoryInfo directoryInfo = new DirectoryInfo(worldReqFilePath);
+			List<string> regionFiles = GetWorldChunkFilePaths(worldReqFilePath, worldModes[selectedModeMrq], new string[] { ".rgn" });
 
-			foreach (string file in worldFiles)
+			ResetCount(ref counts.regionCount);
+
+			// Count the regions in each region file
+			foreach (string filePath in regionFiles)
 			{
-				string path = string.Concat(directoryInfo.Parent, "\\", file, ".rgn");
-
-				if (File.Exists(path))
-				{
-					Debug.WriteLine("Adding RGN file at path: " + path);
-					rgnFiles.Add(path);
-				}
-				else
-				{
-					Debug.WriteLine("Failed to find RGN file at path: " + path);
-				}
+				Debug.WriteLine("Counting number of regions in file at path: " + filePath);
+				counts.regionCount += GetNumberOfStringInstancesInFile(filePath, "Region(\"", StringMatchType.StartsWith);
 			}
 
-			// add '.rgn' to each file in rgnFiles
-			// try to resolve file path for lyr files based on world req file path
-			// count the instances of ' Region(" ' in each rgn file
+			SetCountLabel(lbl_RegionCnt, counts.regionCount);
 		}
 
 		/// <summary>
@@ -218,14 +211,104 @@ namespace ZeroWorldStats
 
 		}
 
-		private List<string> GetWorldFiles(string reqFile, string modeName)
+		/// <summary>
+		/// Count the number of instances of a string in the specified file. 
+		/// Each line in the file is matched with the specified string and match type; if a match is made, the count is incremented.
+		/// </summary>
+		/// <param name="filePath">Path of file to evaluate.</param>
+		/// <param name="match">String to count.</param>
+		/// <param name="matchType">Method with which to match the string. Default is StringMatchType.StartsWith.</param>
+		/// <returns>Number of string instances found. Negative value means an exception was raised.</returns>
+		private int GetNumberOfStringInstancesInFile(string filePath, string match, StringMatchType matchType)
 		{
-			List<string> worldFiles = new List<string>();
+			int count = 0;
 
-			// add list of files from "world" section in req
-			// add list of files from "world" section in selected mode mrq
+			try
+			{
+				StreamReader file = new StreamReader(filePath);
+				string curLine;
 
-			return worldFiles;
+				while ((curLine = file.ReadLine()) != null)
+				{
+					switch (matchType)
+					{
+						case StringMatchType.StartsWith:
+							if (curLine.StartsWith(match))
+							{
+								count++;
+							}
+							break;
+
+						case StringMatchType.EndsWith:
+							if (curLine.EndsWith(match))
+							{
+								count++;
+							}
+							break;
+
+						case StringMatchType.Contains:
+							if (curLine.Contains(match))
+							{
+								count++;
+							}
+							break;
+
+						default:
+							if (curLine.StartsWith(match))
+							{
+								count++;
+							}
+							break;
+					}
+				}
+			}
+			catch (FileNotFoundException ex)
+			{
+				var msg = string.Format("FileNotFoundException: File not found at path: {0}. Reason: {1}", filePath, ex.Message);
+				Trace.WriteLine(msg);
+				return -1;
+			}
+			catch (DirectoryNotFoundException ex)
+			{
+				var msg = string.Format("DirectoryNotFoundException: Directory not found at path: {0}. Reason: {1}", filePath, ex.Message);
+				Trace.WriteLine(msg);
+				return -2;
+			}
+			catch (IOException ex)
+			{
+				var msg = string.Format("IOException: Failed to read file at path: {0}. Reason: {1}", filePath, ex.Message);
+				Trace.WriteLine(msg);
+				return -3;
+			}
+
+			return count;
+		}
+
+		// Returns a list of file paths for files of the specified extensions from the specified world REQ file and mode MRQ.
+		private List<string> GetWorldChunkFilePaths(string reqFile, string mrqFile, string[] extensions)
+		{
+			List<string> filePaths = new List<string>();
+			bool mrq = (mrqFile != "" && mrqFile != DROPDOWN_MODES_BASE);
+
+			// Retrieve the "world" REQN chunks
+			ReqChunk baseWorldChunk = ReqParser.ParseChunk(reqFile, "world");
+			ReqChunk modeWorldChunk = new ReqChunk();
+			if (mrq)
+			{
+				modeWorldChunk = ReqParser.ParseChunk(mrqFile, "world");
+			}
+
+			// Resolve the file paths for each extension
+			foreach (string extension in extensions)
+			{
+				filePaths.AddRange(baseWorldChunk.ResolveContentsAsFiles(worldDirectory, extension).Values);
+				if (mrq)
+				{
+					filePaths.AddRange(modeWorldChunk.ResolveContentsAsFiles(worldDirectory, extension).Values);
+				}
+			}
+
+			return filePaths;
 		}
 	}
 }

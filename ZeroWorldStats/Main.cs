@@ -27,8 +27,12 @@ namespace ZeroWorldStats
 			public int planHubCount;
 		};
 
+		public const string DROPDOWN_MODES_BASE = "[Base]";
+
 		public Counts counts = new Counts();
 		public string worldReqFilePath;
+		public string worldDirectory;
+		public Dictionary<string, string> worldModes = new Dictionary<string, string>();
 		public string selectedModeMrq;
 
 		private void Main_Load(object sender, EventArgs e)
@@ -48,6 +52,12 @@ namespace ZeroWorldStats
 			{
 				worldReqFilePath = openDlg_WorldReqFile.FileName;
 				txt_WorldReqFilePath.Text = worldReqFilePath;
+
+				FileInfo fileInfo = new FileInfo(worldReqFilePath);
+				worldDirectory = fileInfo.DirectoryName;
+
+				PopulateModeList();
+				dd_ModeMrq.SelectedIndex = 0;
 			}
 		}
 
@@ -76,6 +86,29 @@ namespace ZeroWorldStats
 		{
 			selectedModeMrq = (string)dd_ModeMrq.SelectedItem;
 			Debug.WriteLine(selectedModeMrq);
+		}
+
+		private void PopulateModeList()
+		{
+			ReqChunk reqChunk = ReqParser.ParseChunk(worldReqFilePath, "lvl");
+			List<string> worldModeFiles = reqChunk.ResolveContentsAsFiles(worldDirectory, ".mrq");
+			List<string> dropdownModeNames = new List<string>();
+
+			worldModes.Clear();
+
+			// Create a dictionary of modes where the key is the mode's name ("abc_conquest") and the value is the mrq file path
+			foreach (string modeFile in worldModeFiles)
+			{
+				FileInfo fileInfo = new FileInfo(modeFile);
+				string modeName = fileInfo.Name.Substring(0, fileInfo.Name.Length - 4);
+
+				worldModes.Add(modeName, modeFile);
+				dropdownModeNames.Add(modeName);
+			}
+
+			dd_ModeMrq.Items.Clear();
+			dd_ModeMrq.Items.Add(DROPDOWN_MODES_BASE);
+			dd_ModeMrq.Items.AddRange(dropdownModeNames.ToArray());
 		}
 
 		private void ResetCounts()

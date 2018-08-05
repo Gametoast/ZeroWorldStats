@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 
 namespace ZeroWorldStats.Modules
 {
@@ -32,6 +33,45 @@ namespace ZeroWorldStats.Modules
 				Contents = new List<string>();
 			}
 			Contents.Add(file);
+		}
+
+		// TODO eventually we should automatically get the file extensions based on the chunk name (so "texture" would use ".tga")
+		/// <summary>
+		/// Return a list of file paths of the files required in this chunk.
+		/// </summary>
+		/// <param name="directory">Base directory in which to look for the files.</param>
+		/// <param name="extension">File extension that should be resolved. 
+		/// Ex: ".mrq" would try to resolve files with the ".mrq" extension.</param>
+		/// <returns>List of file paths.</returns>
+		public List<string> ResolveContentsAsFiles(string directory, string extension)
+		{
+			List<string> resolvedFiles = new List<string>();
+			string platformDir = string.Concat(directory, "\\", "pc");
+
+			// Override the platform directory if the req chunk has an explicit platform
+			if (Platform != null)
+			{
+				platformDir = string.Concat(directory, "\\", Platform);
+			}
+
+			// Add the files
+			foreach (string file in Contents)
+			{
+				string basePath = string.Concat(directory, "\\", file, extension);
+				string platformPath = string.Concat(platformDir, "\\", file, extension);
+
+				// First, try to find the files in the root directory - if not found there, look in the platform-specific directory
+				if (File.Exists(basePath))
+				{
+					resolvedFiles.Add(basePath);
+				}
+				else if (File.Exists(platformPath))
+				{
+					resolvedFiles.Add(platformPath);
+				}
+			}
+
+			return resolvedFiles;
 		}
 
 		/// <summary>

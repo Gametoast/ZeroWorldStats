@@ -89,6 +89,9 @@ namespace ZeroWorldStats
 
 				PopulatePlanList();
 				ResetSelectedPlan();
+
+				ResetCounts();
+				SetCountLabels();
 			}
 		}
 

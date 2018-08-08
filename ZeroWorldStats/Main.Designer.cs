@@ -46,6 +46,7 @@
 			this.label2 = new System.Windows.Forms.Label();
 			this.btn_GetAllCounts = new System.Windows.Forms.Button();
 			this.dd_PlanFile = new System.Windows.Forms.ComboBox();
+			this.lbl_AppVersion = new System.Windows.Forms.Label();
 			this.flowLayoutPanel2.SuspendLayout();
 			this.SuspendLayout();
 			// 
@@ -235,11 +236,23 @@
 			this.dd_PlanFile.TabIndex = 9;
 			this.dd_PlanFile.SelectionChangeCommitted += new System.EventHandler(this.dd_PlanFile_SelectionChangeCommitted);
 			// 
+			// lbl_AppVersion
+			// 
+			this.lbl_AppVersion.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.lbl_AppVersion.AutoSize = true;
+			this.lbl_AppVersion.Location = new System.Drawing.Point(515, 201);
+			this.lbl_AppVersion.Name = "lbl_AppVersion";
+			this.lbl_AppVersion.Size = new System.Drawing.Size(37, 13);
+			this.lbl_AppVersion.TabIndex = 10;
+			this.lbl_AppVersion.Text = "v0.0.0";
+			this.lbl_AppVersion.TextAlign = System.Drawing.ContentAlignment.BottomRight;
+			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(564, 223);
+			this.Controls.Add(this.lbl_AppVersion);
 			this.Controls.Add(this.dd_PlanFile);
 			this.Controls.Add(this.btn_GetAllCounts);
 			this.Controls.Add(this.label2);
@@ -250,7 +263,7 @@
 			this.Controls.Add(this.btn_Browse);
 			this.Controls.Add(this.flowLayoutPanel2);
 			this.Name = "Main";
-			this.Text = "ZeroWorldStats";
+			this.Text = "Zero World Stats";
 			this.Load += new System.EventHandler(this.Main_Load);
 			this.flowLayoutPanel2.ResumeLayout(false);
 			this.ResumeLayout(false);
@@ -277,6 +290,7 @@
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Button btn_GetAllCounts;
 		private System.Windows.Forms.ComboBox dd_PlanFile;
+		private System.Windows.Forms.Label lbl_AppVersion;
 	}
 }
 

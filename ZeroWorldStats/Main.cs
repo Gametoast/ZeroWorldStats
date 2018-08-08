@@ -37,6 +37,8 @@ namespace ZeroWorldStats
 
 		#region Fields
 
+		public const string APP_NAME = "Zero World Stats";
+		public const string APP_VERSION = "0.1.0";
 		public const string DROPDOWN_MODES_BASE = "[Base]";
 
 		public Counts counts = new Counts();
@@ -55,6 +57,9 @@ namespace ZeroWorldStats
 
 		private void Main_Load(object sender, EventArgs e)
 		{
+			this.Text = string.Format("{0}", APP_NAME);
+			lbl_AppVersion.Text = string.Format("v{0}", APP_VERSION);
+
 			counts.objectCount = 0;
 			counts.regionCount = 0;
 			counts.planConnectionCount = 0;

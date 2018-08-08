@@ -1,4 +1,4 @@
-# Zero World Stats
+![Zero World Stats preview](Resources/app_banner.png)
 
 [![Issues](https://img.shields.io/github/issues/marth8880/ZeroWorldStats.svg?maxAge=60)](https://github.com/marth8880/ZeroMunge/issues)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg?label=license)](https://opensource.org/licenses/BSD-3-Clause)  
@@ -9,7 +9,7 @@
 
 This is a tool for Star Wars Battlefront II (2005) modders to display various world stats such as object count, region count, and plan connection and hub count.
 
-![Zero World Stats](ReleaseImages/v0.1.0/01.png)
+![Zero World Stats preview](ReleaseImages/v0.1.0/01.png)
 
 ## Installation
 

@@ -159,19 +159,44 @@ namespace ZeroWorldStats
 		/// </summary>
 		private void PopulateModeList()
 		{
-			ReqChunk reqChunk = ReqParser.ParseChunk(worldReqFilePath, "lvl");
+			try
+			{
+				try
+				{
+					ReqChunk reqChunk = ReqParser.ParseChunk(worldReqFilePath, "lvl");
+				}
+				catch (FileNotFoundException ex)
+				{
+					Trace.WriteLine(ex.Message);
+					throw;
+				}
+				catch (IOException ex)
+				{
+					Trace.WriteLine(ex.Message);
+					throw;
+				}
+				catch (OutOfMemoryException ex)
+				{
+					Trace.WriteLine(ex.Message);
+					throw;
+				}
+				// Add the "[Base]" mode to the list
+				worldModes.Clear();
+				worldModes.Add(DROPDOWN_MODES_BASE, DROPDOWN_MODES_BASE);
 
-			// Add the "[Base]" mode to the list
-			worldModes.Clear();
-			worldModes.Add(DROPDOWN_MODES_BASE, DROPDOWN_MODES_BASE);
+				// Get the existing mrq files and merge the returned dictionary with the worldModes dictionary
+				var resolvedFiles = reqChunk.ResolveContentsAsFiles(worldDirectory, ".mrq", true);
+				resolvedFiles.ToList().ForEach(x => worldModes[x.Key] = x.Value);
 
-			// Get the existing mrq files and merge the returned dictionary with the worldModes dictionary
-			var resolvedFiles = reqChunk.ResolveContentsAsFiles(worldDirectory, ".mrq", true);
-			resolvedFiles.ToList().ForEach(x => worldModes[x.Key] = x.Value);
-
-			// Add the modes to the dropdown
-			dd_ModeMrq.Items.Clear();
-			dd_ModeMrq.Items.AddRange(worldModes.Keys.ToArray());
+				// Add the modes to the dropdown
+				dd_ModeMrq.Items.Clear();
+				dd_ModeMrq.Items.AddRange(worldModes.Keys.ToArray());
+			}
+			catch (ArgumentNullException ex)
+			{
+				Trace.WriteLine(ex.Message);
+				throw;
+			}
 
 			ResetSelectedMode();
 		}
@@ -193,30 +218,53 @@ namespace ZeroWorldStats
 		/// </summary>
 		private void PopulatePlanList()
 		{
-			worldPlans.Clear();
-
-			// Get the existing pln files that are listed in the world req and merge the returned dictionary with the worldPlans dictionary
-			ReqChunk basePlnChunk = ReqParser.ParseChunk(worldReqFilePath, "congraph");
-
-			var resolvedBasePlanFiles = basePlnChunk.ResolveContentsAsFiles(worldDirectory, ".pln", true);
-			resolvedBasePlanFiles.ToList().ForEach(x => worldPlans[x.Key] = x.Value);
-
-			// Get a list of all the existing pln files in each game mode mrq
-			foreach (string modeFilePath in worldModes.Values)
+			try
 			{
-				if (modeFilePath != DROPDOWN_MODES_BASE)
+				worldPlans.Clear();
+
+				// Get the existing pln files that are listed in the world req and merge the returned dictionary with the worldPlans dictionary
+				ReqChunk basePlnChunk = ReqParser.ParseChunk(worldReqFilePath, "congraph");
+
+				var resolvedBasePlanFiles = basePlnChunk.ResolveContentsAsFiles(worldDirectory, ".pln", true);
+				resolvedBasePlanFiles.ToList().ForEach(x => worldPlans[x.Key] = x.Value);
+
+				// Get a list of all the existing pln files in each game mode mrq
+				foreach (string modeFilePath in worldModes.Values)
 				{
-					ReqChunk modePlnChunk = ReqParser.ParseChunk(modeFilePath, "congraph");
+					if (modeFilePath != DROPDOWN_MODES_BASE)
+					{
+						ReqChunk modePlnChunk = ReqParser.ParseChunk(modeFilePath, "congraph");
 
-					// Get the mrq's existing pln files and merge the returned dictionary with the worldPlans dictionary
-					var resolvedModePlanFiles = modePlnChunk.ResolveContentsAsFiles(worldDirectory, ".pln", true);
-					resolvedModePlanFiles.ToList().ForEach(x => worldPlans[x.Key] = x.Value);
+						// Get the mrq's existing pln files and merge the returned dictionary with the worldPlans dictionary
+						var resolvedModePlanFiles = modePlnChunk.ResolveContentsAsFiles(worldDirectory, ".pln", true);
+						resolvedModePlanFiles.ToList().ForEach(x => worldPlans[x.Key] = x.Value);
+					}
 				}
-			}
 
-			// Add the pln files to the dropdown
-			dd_PlanFile.Items.Clear();
-			dd_PlanFile.Items.AddRange(worldPlans.Keys.ToArray());
+				// Add the pln files to the dropdown
+				dd_PlanFile.Items.Clear();
+				dd_PlanFile.Items.AddRange(worldPlans.Keys.ToArray());
+			}
+			catch (ArgumentNullException ex)
+			{
+				Trace.WriteLine(ex.Message);
+				throw;
+			}
+			catch (FileNotFoundException ex)
+			{
+				Trace.WriteLine(ex.Message);
+				throw;
+			}
+			catch (IOException ex)
+			{
+				Trace.WriteLine(ex.Message);
+				throw;
+			}
+			catch (OutOfMemoryException ex)
+			{
+				Trace.WriteLine(ex.Message);
+				throw;
+			}
 
 			ResetSelectedPlan();
 		}
@@ -280,7 +328,11 @@ namespace ZeroWorldStats
 			foreach (string filePath in objectFiles)
 			{
 				Debug.WriteLine("Counting number of objects in file at path: " + filePath);
-				counts.objectCount += GetNumberOfStringInstancesInFile(filePath, "Object(\"", StringMatchType.StartsWith);
+				int numFound = GetNumberOfStringInstancesInFile(filePath, "Object(\"", StringMatchType.StartsWith);
+				if (numFound >= 0)
+				{
+					counts.objectCount += numFound;
+				}
 			}
 
 			SetCountLabel(lbl_ObjectCnt, counts.objectCount);
@@ -299,7 +351,11 @@ namespace ZeroWorldStats
 			foreach (string filePath in regionFiles)
 			{
 				Debug.WriteLine("Counting number of regions in file at path: " + filePath);
-				counts.regionCount += GetNumberOfStringInstancesInFile(filePath, "Region(\"", StringMatchType.StartsWith);
+				int numFound = GetNumberOfStringInstancesInFile(filePath, "Region(\"", StringMatchType.StartsWith);
+				if (numFound >= 0)
+				{
+					counts.regionCount += numFound;
+				}
 			}
 
 			SetCountLabel(lbl_RegionCnt, counts.regionCount);
@@ -316,7 +372,11 @@ namespace ZeroWorldStats
 
 			// Count the connections in the plan file
 			Debug.WriteLine("Counting number of connections in file at path: " + planFilePath);
-			counts.planConnectionCount += GetNumberOfStringInstancesInFile(planFilePath, "Connection(\"", StringMatchType.StartsWith);
+			int numFound = GetNumberOfStringInstancesInFile(planFilePath, "Connection(\"", StringMatchType.StartsWith);
+			if (numFound >= 0)
+			{
+				counts.planConnectionCount += numFound;
+			}
 
 			SetCountLabel(lbl_PlanConnectionCnt, counts.planConnectionCount);
 		}
@@ -332,7 +392,11 @@ namespace ZeroWorldStats
 
 			// Count the hubs in the plan file
 			Debug.WriteLine("Counting number of hubs in file at path: " + planFilePath);
-			counts.planHubCount += GetNumberOfStringInstancesInFile(planFilePath, "Hub(\"", StringMatchType.StartsWith);
+			int numFound = GetNumberOfStringInstancesInFile(planFilePath, "Hub(\"", StringMatchType.StartsWith);
+			if (numFound >= 0)
+			{
+				counts.planHubCount += numFound;
+			}
 
 			SetCountLabel(lbl_PlanHubCnt, counts.planHubCount);
 		}
@@ -392,19 +456,27 @@ namespace ZeroWorldStats
 			{
 				var msg = string.Format("FileNotFoundException: File not found at path: {0}. Reason: {1}", filePath, ex.Message);
 				Trace.WriteLine(msg);
+				MessageBox.Show(this, "File not found at the specified path.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return -1;
 			}
 			catch (DirectoryNotFoundException ex)
 			{
 				var msg = string.Format("DirectoryNotFoundException: Directory not found at path: {0}. Reason: {1}", filePath, ex.Message);
 				Trace.WriteLine(msg);
+				MessageBox.Show(this, "Directory not found at the specified path.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return -2;
 			}
 			catch (IOException ex)
 			{
 				var msg = string.Format("IOException: Failed to read file at path: {0}. Reason: {1}", filePath, ex.Message);
 				Trace.WriteLine(msg);
+				MessageBox.Show(this, "Failed to read file at path. Reason: \n\n" + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return -3;
+			}
+			catch (ArgumentNullException ex)
+			{
+				Trace.WriteLine(ex.Message);
+				throw;
 			}
 
 			return count;
@@ -422,24 +494,42 @@ namespace ZeroWorldStats
 			List<string> filePaths = new List<string>();
 			bool mrq = (mrqFile != "" && mrqFile != DROPDOWN_MODES_BASE);
 
-			// Retrieve the "world" REQN chunks
-			ReqChunk baseWorldChunk = ReqParser.ParseChunk(reqFile, "world");
-			ReqChunk modeWorldChunk = new ReqChunk();
-			if (mrq)
+			try
 			{
-				modeWorldChunk = ReqParser.ParseChunk(mrqFile, "world");
-			}
-
-			// Resolve the file paths for each extension
-			foreach (string extension in extensions)
-			{
-				filePaths.AddRange(baseWorldChunk.ResolveContentsAsFiles(worldDirectory, extension).Values);
+				// Retrieve the "world" REQN chunks
+				ReqChunk baseWorldChunk = ReqParser.ParseChunk(reqFile, "world");
+				ReqChunk modeWorldChunk = new ReqChunk();
 				if (mrq)
 				{
-					filePaths.AddRange(modeWorldChunk.ResolveContentsAsFiles(worldDirectory, extension).Values);
+					modeWorldChunk = ReqParser.ParseChunk(mrqFile, "world");
+				}
+
+				// Resolve the file paths for each extension
+				foreach (string extension in extensions)
+				{
+					filePaths.AddRange(baseWorldChunk.ResolveContentsAsFiles(worldDirectory, extension).Values);
+					if (mrq)
+					{
+						filePaths.AddRange(modeWorldChunk.ResolveContentsAsFiles(worldDirectory, extension).Values);
+					}
 				}
 			}
-
+			catch (FileNotFoundException ex)
+			{
+				Trace.WriteLine(ex.Message);
+				throw;
+			}
+			catch (IOException ex)
+			{
+				Trace.WriteLine(ex.Message);
+				throw;
+			}
+			catch (OutOfMemoryException ex)
+			{
+				Trace.WriteLine(ex.Message);
+				throw;
+			}
+			
 			return filePaths;
 		}
 

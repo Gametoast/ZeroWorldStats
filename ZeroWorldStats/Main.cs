@@ -164,6 +164,17 @@ namespace ZeroWorldStats
 				try
 				{
 					ReqChunk reqChunk = ReqParser.ParseChunk(worldReqFilePath, "lvl");
+					// Add the "[Base]" mode to the list
+					worldModes.Clear();
+					worldModes.Add(DROPDOWN_MODES_BASE, DROPDOWN_MODES_BASE);
+
+					// Get the existing mrq files and merge the returned dictionary with the worldModes dictionary
+					var resolvedFiles = reqChunk.ResolveContentsAsFiles(worldDirectory, ".mrq", true);
+					resolvedFiles.ToList().ForEach(x => worldModes[x.Key] = x.Value);
+
+					// Add the modes to the dropdown
+					dd_ModeMrq.Items.Clear();
+					dd_ModeMrq.Items.AddRange(worldModes.Keys.ToArray());
 				}
 				catch (FileNotFoundException ex)
 				{
@@ -180,17 +191,6 @@ namespace ZeroWorldStats
 					Trace.WriteLine(ex.Message);
 					throw;
 				}
-				// Add the "[Base]" mode to the list
-				worldModes.Clear();
-				worldModes.Add(DROPDOWN_MODES_BASE, DROPDOWN_MODES_BASE);
-
-				// Get the existing mrq files and merge the returned dictionary with the worldModes dictionary
-				var resolvedFiles = reqChunk.ResolveContentsAsFiles(worldDirectory, ".mrq", true);
-				resolvedFiles.ToList().ForEach(x => worldModes[x.Key] = x.Value);
-
-				// Add the modes to the dropdown
-				dd_ModeMrq.Items.Clear();
-				dd_ModeMrq.Items.AddRange(worldModes.Keys.ToArray());
 			}
 			catch (ArgumentNullException ex)
 			{

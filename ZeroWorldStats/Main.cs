@@ -147,7 +147,9 @@ namespace ZeroWorldStats
 		#endregion Form controls
 
 
-		// Repopulates the mode list with the modes that are listed in world REQ
+		/// <summary>
+		/// Repopulates the mode list with the modes that are listed in world REQ.
+		/// </summary>
 		private void PopulateModeList()
 		{
 			ReqChunk reqChunk = ReqParser.ParseChunk(worldReqFilePath, "lvl");
@@ -166,8 +168,10 @@ namespace ZeroWorldStats
 
 			ResetSelectedMode();
 		}
-
-		// Resets the mode dropdown to the first item
+		
+		/// <summary>
+		/// Resets the mode dropdown to the first item.
+		/// </summary>
 		private void ResetSelectedMode()
 		{
 			if (dd_ModeMrq.Items.Count > 0)
@@ -176,8 +180,10 @@ namespace ZeroWorldStats
 				selectedModeMrq = (string)dd_ModeMrq.SelectedItem;
 			}
 		}
-
-		// Repopulates the plan list with the plan files that are listed in the world REQ and mode MRQs
+		
+		/// <summary>
+		/// Repopulates the plan list with the plan files that are listed in the world REQ and mode MRQs.
+		/// </summary>
 		private void PopulatePlanList()
 		{
 			worldPlans.Clear();
@@ -217,8 +223,10 @@ namespace ZeroWorldStats
 
 			ResetSelectedPlan();
 		}
-
-		// Resets the plan dropdown to the first item
+		
+		/// <summary>
+		/// Resets the plan dropdown to the first item.
+		/// </summary>
 		private void ResetSelectedPlan()
 		{
 			if (dd_PlanFile.Items.Count > 0)
@@ -404,8 +412,14 @@ namespace ZeroWorldStats
 
 			return count;
 		}
-
-		// Returns a list of file paths for files of the specified extensions from the specified world REQ file and mode MRQ.
+		
+		/// <summary>
+		/// Returns a list of file paths for files of the specified extensions from the specified world REQ file and mode MRQ.
+		/// </summary>
+		/// <param name="reqFile">Path of REQ file to parse.</param>
+		/// <param name="mrqFile">Path of MRQ file to parse.</param>
+		/// <param name="extensions">Array of file extensions to check for. (ex: ".rgn")</param>
+		/// <returns></returns>
 		private List<string> GetWorldChunkFilePaths(string reqFile, string mrqFile, string[] extensions)
 		{
 			List<string> filePaths = new List<string>();

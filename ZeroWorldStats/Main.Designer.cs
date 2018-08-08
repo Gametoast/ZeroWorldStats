@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
 			this.btn_Browse = new System.Windows.Forms.Button();
 			this.txt_WorldReqFilePath = new System.Windows.Forms.TextBox();
 			this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
@@ -262,6 +263,7 @@
 			this.Controls.Add(this.txt_WorldReqFilePath);
 			this.Controls.Add(this.btn_Browse);
 			this.Controls.Add(this.flowLayoutPanel2);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "Main";
 			this.Text = "Zero World Stats";
 			this.Load += new System.EventHandler(this.Main_Load);

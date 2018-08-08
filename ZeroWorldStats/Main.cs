@@ -16,6 +16,9 @@ namespace ZeroWorldStats
 			InitializeComponent();
 		}
 
+
+		#region Custom data types
+
 		public struct Counts
 		{
 			public int objectCount;
@@ -30,6 +33,8 @@ namespace ZeroWorldStats
 			EndsWith,
 			Contains
 		};
+
+		#endregion Custom data types
 
 
 		#region Fields
@@ -146,6 +151,8 @@ namespace ZeroWorldStats
 
 		#endregion Form controls
 
+
+		#region Core logic
 
 		/// <summary>
 		/// Repopulates the mode list with the modes that are listed in world REQ.
@@ -435,5 +442,7 @@ namespace ZeroWorldStats
 
 			return filePaths;
 		}
+
+		#endregion Core logic
 	}
 }

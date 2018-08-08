@@ -66,9 +66,9 @@
 			// 
 			this.txt_WorldReqFilePath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.txt_WorldReqFilePath.Location = new System.Drawing.Point(125, 12);
+			this.txt_WorldReqFilePath.Location = new System.Drawing.Point(112, 12);
 			this.txt_WorldReqFilePath.Name = "txt_WorldReqFilePath";
-			this.txt_WorldReqFilePath.Size = new System.Drawing.Size(346, 20);
+			this.txt_WorldReqFilePath.Size = new System.Drawing.Size(359, 20);
 			this.txt_WorldReqFilePath.TabIndex = 0;
 			this.txt_WorldReqFilePath.TextChanged += new System.EventHandler(this.txt_WorldReqFilePath_TextChanged);
 			// 
@@ -174,18 +174,18 @@
 			this.label5.AutoSize = true;
 			this.label5.Location = new System.Drawing.Point(12, 69);
 			this.label5.Name = "label5";
-			this.label5.Size = new System.Drawing.Size(107, 13);
+			this.label5.Size = new System.Drawing.Size(91, 13);
 			this.label5.TabIndex = 5;
-			this.label5.Text = "World PLN file name:";
+			this.label5.Text = "World PLN name:";
 			// 
 			// label1
 			// 
 			this.label1.AutoSize = true;
 			this.label1.Location = new System.Drawing.Point(12, 15);
 			this.label1.Name = "label1";
-			this.label1.Size = new System.Drawing.Size(104, 13);
+			this.label1.Size = new System.Drawing.Size(88, 13);
 			this.label1.TabIndex = 6;
-			this.label1.Text = "World REQ file path:";
+			this.label1.Text = "World REQ path:";
 			// 
 			// openDlg_WorldReqFile
 			// 
@@ -200,9 +200,9 @@
 			this.dd_ModeMrq.FormattingEnabled = true;
 			this.dd_ModeMrq.Items.AddRange(new object[] {
             "[Base]"});
-			this.dd_ModeMrq.Location = new System.Drawing.Point(125, 38);
+			this.dd_ModeMrq.Location = new System.Drawing.Point(112, 38);
 			this.dd_ModeMrq.Name = "dd_ModeMrq";
-			this.dd_ModeMrq.Size = new System.Drawing.Size(346, 21);
+			this.dd_ModeMrq.Size = new System.Drawing.Size(359, 21);
 			this.dd_ModeMrq.TabIndex = 3;
 			this.dd_ModeMrq.SelectionChangeCommitted += new System.EventHandler(this.dd_ModeMrq_SelectionChangeCommitted);
 			// 
@@ -211,9 +211,9 @@
 			this.label2.AutoSize = true;
 			this.label2.Location = new System.Drawing.Point(12, 41);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(65, 13);
+			this.label2.Size = new System.Drawing.Size(94, 13);
 			this.label2.TabIndex = 8;
-			this.label2.Text = "Mode MRQ:";
+			this.label2.Text = "Mode MRQ name:";
 			// 
 			// btn_GetAllCounts
 			// 
@@ -231,9 +231,9 @@
 			this.dd_PlanFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.dd_PlanFile.FormattingEnabled = true;
-			this.dd_PlanFile.Location = new System.Drawing.Point(125, 66);
+			this.dd_PlanFile.Location = new System.Drawing.Point(112, 66);
 			this.dd_PlanFile.Name = "dd_PlanFile";
-			this.dd_PlanFile.Size = new System.Drawing.Size(427, 21);
+			this.dd_PlanFile.Size = new System.Drawing.Size(359, 21);
 			this.dd_PlanFile.TabIndex = 9;
 			this.dd_PlanFile.SelectionChangeCommitted += new System.EventHandler(this.dd_PlanFile_SelectionChangeCommitted);
 			// 
@@ -264,6 +264,7 @@
 			this.Controls.Add(this.btn_Browse);
 			this.Controls.Add(this.flowLayoutPanel2);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.MinimumSize = new System.Drawing.Size(400, 262);
 			this.Name = "Main";
 			this.Text = "Zero World Stats";
 			this.Load += new System.EventHandler(this.Main_Load);

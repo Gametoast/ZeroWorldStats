@@ -39,20 +39,20 @@
 			this.lbl_PlanConnectionCnt = new System.Windows.Forms.Label();
 			this.btn_GetPlanHubCnt = new System.Windows.Forms.Button();
 			this.lbl_PlanHubCnt = new System.Windows.Forms.Label();
-			this.txt_WorldPlnFileName = new System.Windows.Forms.TextBox();
 			this.label5 = new System.Windows.Forms.Label();
 			this.label1 = new System.Windows.Forms.Label();
 			this.openDlg_WorldReqFile = new System.Windows.Forms.OpenFileDialog();
 			this.dd_ModeMrq = new System.Windows.Forms.ComboBox();
 			this.label2 = new System.Windows.Forms.Label();
 			this.btn_GetAllCounts = new System.Windows.Forms.Button();
+			this.dd_PlanFile = new System.Windows.Forms.ComboBox();
 			this.flowLayoutPanel2.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// btn_Browse
 			// 
 			this.btn_Browse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btn_Browse.Location = new System.Drawing.Point(392, 10);
+			this.btn_Browse.Location = new System.Drawing.Point(477, 10);
 			this.btn_Browse.Name = "btn_Browse";
 			this.btn_Browse.Size = new System.Drawing.Size(75, 23);
 			this.btn_Browse.TabIndex = 1;
@@ -66,8 +66,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.txt_WorldReqFilePath.Location = new System.Drawing.Point(125, 12);
 			this.txt_WorldReqFilePath.Name = "txt_WorldReqFilePath";
-			this.txt_WorldReqFilePath.Size = new System.Drawing.Size(261, 20);
+			this.txt_WorldReqFilePath.Size = new System.Drawing.Size(346, 20);
 			this.txt_WorldReqFilePath.TabIndex = 0;
+			this.txt_WorldReqFilePath.TextChanged += new System.EventHandler(this.txt_WorldReqFilePath_TextChanged);
 			// 
 			// flowLayoutPanel2
 			// 
@@ -83,7 +84,7 @@
 			this.flowLayoutPanel2.Controls.Add(this.lbl_PlanHubCnt);
 			this.flowLayoutPanel2.Location = new System.Drawing.Point(12, 95);
 			this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-			this.flowLayoutPanel2.Size = new System.Drawing.Size(373, 117);
+			this.flowLayoutPanel2.Size = new System.Drawing.Size(373, 116);
 			this.flowLayoutPanel2.TabIndex = 3;
 			// 
 			// btn_GetObjectCnt
@@ -166,19 +167,10 @@
 			this.lbl_PlanHubCnt.Text = "planHubCount";
 			this.lbl_PlanHubCnt.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			// 
-			// txt_WorldPlnFileName
-			// 
-			this.txt_WorldPlnFileName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.txt_WorldPlnFileName.Location = new System.Drawing.Point(125, 41);
-			this.txt_WorldPlnFileName.Name = "txt_WorldPlnFileName";
-			this.txt_WorldPlnFileName.Size = new System.Drawing.Size(342, 20);
-			this.txt_WorldPlnFileName.TabIndex = 2;
-			// 
 			// label5
 			// 
 			this.label5.AutoSize = true;
-			this.label5.Location = new System.Drawing.Point(12, 44);
+			this.label5.Location = new System.Drawing.Point(12, 69);
 			this.label5.Name = "label5";
 			this.label5.Size = new System.Drawing.Size(107, 13);
 			this.label5.TabIndex = 5;
@@ -206,16 +198,16 @@
 			this.dd_ModeMrq.FormattingEnabled = true;
 			this.dd_ModeMrq.Items.AddRange(new object[] {
             "[Base]"});
-			this.dd_ModeMrq.Location = new System.Drawing.Point(125, 68);
+			this.dd_ModeMrq.Location = new System.Drawing.Point(125, 38);
 			this.dd_ModeMrq.Name = "dd_ModeMrq";
-			this.dd_ModeMrq.Size = new System.Drawing.Size(261, 21);
+			this.dd_ModeMrq.Size = new System.Drawing.Size(346, 21);
 			this.dd_ModeMrq.TabIndex = 3;
 			this.dd_ModeMrq.SelectionChangeCommitted += new System.EventHandler(this.dd_ModeMrq_SelectionChangeCommitted);
 			// 
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(12, 71);
+			this.label2.Location = new System.Drawing.Point(12, 41);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(65, 13);
 			this.label2.TabIndex = 8;
@@ -224,7 +216,7 @@
 			// btn_GetAllCounts
 			// 
 			this.btn_GetAllCounts.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.btn_GetAllCounts.Location = new System.Drawing.Point(392, 66);
+			this.btn_GetAllCounts.Location = new System.Drawing.Point(477, 36);
 			this.btn_GetAllCounts.Name = "btn_GetAllCounts";
 			this.btn_GetAllCounts.Size = new System.Drawing.Size(75, 23);
 			this.btn_GetAllCounts.TabIndex = 4;
@@ -232,17 +224,28 @@
 			this.btn_GetAllCounts.UseVisualStyleBackColor = true;
 			this.btn_GetAllCounts.Click += new System.EventHandler(this.btn_GetAllCounts_Click);
 			// 
+			// dd_PlanFile
+			// 
+			this.dd_PlanFile.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.dd_PlanFile.FormattingEnabled = true;
+			this.dd_PlanFile.Location = new System.Drawing.Point(125, 66);
+			this.dd_PlanFile.Name = "dd_PlanFile";
+			this.dd_PlanFile.Size = new System.Drawing.Size(427, 21);
+			this.dd_PlanFile.TabIndex = 9;
+			this.dd_PlanFile.SelectionChangeCommitted += new System.EventHandler(this.dd_PlanFile_SelectionChangeCommitted);
+			// 
 			// Main
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(479, 224);
+			this.ClientSize = new System.Drawing.Size(564, 223);
+			this.Controls.Add(this.dd_PlanFile);
 			this.Controls.Add(this.btn_GetAllCounts);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.dd_ModeMrq);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.label5);
-			this.Controls.Add(this.txt_WorldPlnFileName);
 			this.Controls.Add(this.txt_WorldReqFilePath);
 			this.Controls.Add(this.btn_Browse);
 			this.Controls.Add(this.flowLayoutPanel2);
@@ -267,13 +270,13 @@
 		private System.Windows.Forms.Label lbl_PlanHubCnt;
 		private System.Windows.Forms.Button btn_GetPlanConnectionCnt;
 		private System.Windows.Forms.Label lbl_PlanConnectionCnt;
-		private System.Windows.Forms.TextBox txt_WorldPlnFileName;
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.Label label1;
 		private System.Windows.Forms.OpenFileDialog openDlg_WorldReqFile;
 		private System.Windows.Forms.ComboBox dd_ModeMrq;
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.Button btn_GetAllCounts;
+		private System.Windows.Forms.ComboBox dd_PlanFile;
 	}
 }
 

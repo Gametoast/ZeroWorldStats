@@ -34,6 +34,9 @@ namespace ZeroWorldStats
 			Contains
 		};
 
+
+		#region Fields
+
 		public const string DROPDOWN_MODES_BASE = "[Base]";
 
 		public Counts counts = new Counts();
@@ -41,7 +44,14 @@ namespace ZeroWorldStats
 		public string worldDirectory;
 		public Dictionary<string, string> worldModes = new Dictionary<string, string>();
 		public Dictionary<string, string> worldLayers = new Dictionary<string, string>();
+		public Dictionary<string, string> worldPlans = new Dictionary<string, string>();
 		public string selectedModeMrq = DROPDOWN_MODES_BASE;
+		public string selectedPlanFile;
+
+		#endregion Fields
+
+
+		#region Form controls
 
 		private void Main_Load(object sender, EventArgs e)
 		{
@@ -52,6 +62,11 @@ namespace ZeroWorldStats
 
 			ResetCounts();
 			SetCountLabels();
+		}
+
+		private void txt_WorldReqFilePath_TextChanged(object sender, EventArgs e)
+		{
+			txt_WorldReqFilePath.Text = worldReqFilePath;
 		}
 
 		private void btn_Browse_Click(object sender, EventArgs e)
@@ -66,32 +81,10 @@ namespace ZeroWorldStats
 
 				PopulateModeList();
 				ResetSelectedMode();
+
+				PopulatePlanList();
+				ResetSelectedPlan();
 			}
-		}
-
-		private void btn_GetAllCounts_Click(object sender, EventArgs e)
-		{
-			GetCounts();
-		}
-
-		private void btn_GetObjectCnt_Click(object sender, EventArgs e)
-		{
-			GetObjectCount();
-		}
-
-		private void btn_GetRegionCnt_Click(object sender, EventArgs e)
-		{
-			GetRegionCount();
-		}
-
-		private void btn_GetPlanConnectionCnt_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void btn_GetPlanHubCnt_Click(object sender, EventArgs e)
-		{
-
 		}
 
 		private void dd_ModeMrq_SelectionChangeCommitted(object sender, EventArgs e)
@@ -100,27 +93,134 @@ namespace ZeroWorldStats
 			Debug.WriteLine(selectedModeMrq);
 		}
 
-		private void ResetSelectedMode()
+		private void dd_PlanFile_SelectionChangeCommitted(object sender, EventArgs e)
 		{
-			dd_ModeMrq.SelectedIndex = 0;
-			selectedModeMrq = (string)dd_ModeMrq.SelectedItem;
+			selectedPlanFile = (string)dd_PlanFile.SelectedItem;
+			Debug.WriteLine(selectedPlanFile);
 		}
 
+		private void btn_GetAllCounts_Click(object sender, EventArgs e)
+		{
+			if (File.Exists(worldReqFilePath))
+			{
+				GetCounts();
+			}
+		}
+
+		private void btn_GetObjectCnt_Click(object sender, EventArgs e)
+		{
+			if (File.Exists(worldReqFilePath))
+			{
+				GetObjectCount();
+			}
+		}
+
+		private void btn_GetRegionCnt_Click(object sender, EventArgs e)
+		{
+			if (File.Exists(worldReqFilePath))
+			{
+				GetRegionCount();
+			}
+		}
+
+		private void btn_GetPlanConnectionCnt_Click(object sender, EventArgs e)
+		{
+			if (File.Exists(worldReqFilePath))
+			{
+				GetPlanConnectionCount();
+			}
+		}
+
+		private void btn_GetPlanHubCnt_Click(object sender, EventArgs e)
+		{
+			if (File.Exists(worldReqFilePath))
+			{
+				GetPlanHubCount();
+			}
+		}
+
+		#endregion Form controls
+
+
+		// Repopulates the mode list with the modes that are listed in world REQ
 		private void PopulateModeList()
 		{
 			ReqChunk reqChunk = ReqParser.ParseChunk(worldReqFilePath, "lvl");
-			List<string> dropdownModeNames = new List<string>();
-			
+
+			// Add the "[Base]" mode to the list
 			worldModes.Clear();
 			worldModes.Add(DROPDOWN_MODES_BASE, DROPDOWN_MODES_BASE);
 
+			// Get the existing mrq files and merge the returned dictionary with the worldModes dictionary
 			var resolvedFiles = reqChunk.ResolveContentsAsFiles(worldDirectory, ".mrq");
 			resolvedFiles.ToList().ForEach(x => worldModes[x.Key] = x.Value);
 
+			// Add the modes to the dropdown
 			dd_ModeMrq.Items.Clear();
 			dd_ModeMrq.Items.AddRange(worldModes.Keys.ToArray());
 
 			ResetSelectedMode();
+		}
+
+		// Resets the mode dropdown to the first item
+		private void ResetSelectedMode()
+		{
+			if (dd_ModeMrq.Items.Count > 0)
+			{
+				dd_ModeMrq.SelectedIndex = 0;
+				selectedModeMrq = (string)dd_ModeMrq.SelectedItem;
+			}
+		}
+
+		// Repopulates the plan list with the plan files that are listed in the world REQ and mode MRQs
+		private void PopulatePlanList()
+		{
+			worldPlans.Clear();
+
+			// Get the existing pln files that are listed in the world req and merge the returned dictionary with the worldPlans dictionary
+			ReqChunk basePlnChunk = ReqParser.ParseChunk(worldReqFilePath, "congraph");
+
+			var resolvedBasePlanFiles = basePlnChunk.ResolveContentsAsFiles(worldDirectory, ".pln");
+			resolvedBasePlanFiles.ToList().ForEach(x => worldPlans[x.Key] = x.Value);
+
+			// Get a list of all the existing pln files in each game mode mrq
+			foreach (string modeFilePath in worldModes.Values)
+			{
+				if (modeFilePath != DROPDOWN_MODES_BASE)
+				{
+					ReqChunk modePlnChunk = ReqParser.ParseChunk(modeFilePath, "congraph");
+
+					// Get the mrq's existing pln files and merge the returned dictionary with the worldPlans dictionary
+					var resolvedModePlanFiles = modePlnChunk.ResolveContentsAsFiles(worldDirectory, ".pln");
+					resolvedModePlanFiles.ToList().ForEach(x => worldPlans[x.Key] = x.Value);
+				}
+			}
+
+			// Append ".pln" to the plan file names
+			Dictionary<string, string> newWorldPlans = new Dictionary<string, string>();
+
+			foreach (KeyValuePair<string, string> kvp in worldPlans)
+			{
+				newWorldPlans.Add(string.Format("{0}.pln", kvp.Key), kvp.Value);
+			}
+
+			worldPlans = newWorldPlans;
+
+			// Add the pln files to the dropdown
+			dd_PlanFile.Items.Clear();
+			dd_PlanFile.Items.AddRange(worldPlans.Keys.ToArray());
+
+			ResetSelectedPlan();
+		}
+
+		// Resets the plan dropdown to the first item
+		private void ResetSelectedPlan()
+		{
+			if (dd_PlanFile.Items.Count > 0)
+			{
+				dd_PlanFile.SelectedIndex = 0;
+				selectedPlanFile = (string)dd_PlanFile.SelectedItem;
+			}
 		}
 
 		private void ResetCounts()
@@ -200,7 +300,15 @@ namespace ZeroWorldStats
 		/// </summary>
 		private void GetPlanConnectionCount()
 		{
-			
+			string planFilePath = worldPlans[selectedPlanFile];
+
+			ResetCount(ref counts.planConnectionCount);
+
+			// Count the connections in the plan file
+			Debug.WriteLine("Counting number of connections in file at path: " + planFilePath);
+			counts.planConnectionCount += GetNumberOfStringInstancesInFile(planFilePath, "Connection(\"", StringMatchType.StartsWith);
+
+			SetCountLabel(lbl_PlanConnectionCnt, counts.planConnectionCount);
 		}
 
 		/// <summary>
@@ -208,7 +316,15 @@ namespace ZeroWorldStats
 		/// </summary>
 		private void GetPlanHubCount()
 		{
+			string planFilePath = worldPlans[selectedPlanFile];
 
+			ResetCount(ref counts.planHubCount);
+
+			// Count the hubs in the plan file
+			Debug.WriteLine("Counting number of hubs in file at path: " + planFilePath);
+			counts.planHubCount += GetNumberOfStringInstancesInFile(planFilePath, "Hub(\"", StringMatchType.StartsWith);
+
+			SetCountLabel(lbl_PlanHubCnt, counts.planHubCount);
 		}
 
 		/// <summary>

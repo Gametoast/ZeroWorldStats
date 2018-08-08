@@ -24,7 +24,7 @@ Please note that [.NET Framework 4](https://www.microsoft.com/en-us/download/det
 
 ## Bugs & Suggestions
 
-Find a bug or have a suggestion? Submit them [HERE](https://github.com/marth8880/ZeroWorldStats/issues)
+Find a bug or have a suggestion? Submit them [HERE](https://github.com/marth8880/ZeroWorldStats/issues).
 
 ## License
 

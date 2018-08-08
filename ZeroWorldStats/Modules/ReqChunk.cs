@@ -40,10 +40,11 @@ namespace ZeroWorldStats.Modules
 		/// Return a dictionary of file paths of the files required in this chunk.
 		/// </summary>
 		/// <param name="directory">Base directory in which to look for the files.</param>
-		/// <param name="extension">File extension that should be resolved. 
+		/// <param name="extension">File extension that should be resolved.</param>
+		/// <param name="addExtensionToKeys">Whether or not to add the file extension to each file's Key. (ex: "abc_conquest.mrq" vs. "abc_conquest")</param>
 		/// Ex: ".mrq" would try to resolve files with the ".mrq" extension.</param>
 		/// <returns>Dictionary of file paths.</returns>
-		public Dictionary<string, string> ResolveContentsAsFiles(string directory, string extension)
+		public Dictionary<string, string> ResolveContentsAsFiles(string directory, string extension, bool addExtensionToKeys = false)
 		{
 			Dictionary<string, string> resolvedFiles = new Dictionary<string, string>();
 			string platformDir = string.Concat(directory, "\\", "pc");
@@ -59,15 +60,21 @@ namespace ZeroWorldStats.Modules
 			{
 				string basePath = string.Concat(directory, "\\", file, extension);
 				string platformPath = string.Concat(platformDir, "\\", file, extension);
+				string fileToAdd = file;
+
+				if (addExtensionToKeys)
+				{
+					fileToAdd += extension;
+				}
 
 				// First, try to find the files in the root directory - if not found there, look in the platform-specific directory
 				if (File.Exists(basePath))
 				{
-					resolvedFiles.Add(file, basePath);
+					resolvedFiles.Add(fileToAdd, basePath);
 				}
 				else if (File.Exists(platformPath))
 				{
-					resolvedFiles.Add(file, platformPath);
+					resolvedFiles.Add(fileToAdd, platformPath);
 				}
 			}
 

@@ -162,7 +162,7 @@ namespace ZeroWorldStats
 			worldModes.Add(DROPDOWN_MODES_BASE, DROPDOWN_MODES_BASE);
 
 			// Get the existing mrq files and merge the returned dictionary with the worldModes dictionary
-			var resolvedFiles = reqChunk.ResolveContentsAsFiles(worldDirectory, ".mrq");
+			var resolvedFiles = reqChunk.ResolveContentsAsFiles(worldDirectory, ".mrq", true);
 			resolvedFiles.ToList().ForEach(x => worldModes[x.Key] = x.Value);
 
 			// Add the modes to the dropdown
@@ -194,7 +194,7 @@ namespace ZeroWorldStats
 			// Get the existing pln files that are listed in the world req and merge the returned dictionary with the worldPlans dictionary
 			ReqChunk basePlnChunk = ReqParser.ParseChunk(worldReqFilePath, "congraph");
 
-			var resolvedBasePlanFiles = basePlnChunk.ResolveContentsAsFiles(worldDirectory, ".pln");
+			var resolvedBasePlanFiles = basePlnChunk.ResolveContentsAsFiles(worldDirectory, ".pln", true);
 			resolvedBasePlanFiles.ToList().ForEach(x => worldPlans[x.Key] = x.Value);
 
 			// Get a list of all the existing pln files in each game mode mrq
@@ -205,20 +205,10 @@ namespace ZeroWorldStats
 					ReqChunk modePlnChunk = ReqParser.ParseChunk(modeFilePath, "congraph");
 
 					// Get the mrq's existing pln files and merge the returned dictionary with the worldPlans dictionary
-					var resolvedModePlanFiles = modePlnChunk.ResolveContentsAsFiles(worldDirectory, ".pln");
+					var resolvedModePlanFiles = modePlnChunk.ResolveContentsAsFiles(worldDirectory, ".pln", true);
 					resolvedModePlanFiles.ToList().ForEach(x => worldPlans[x.Key] = x.Value);
 				}
 			}
-
-			// Append ".pln" to the plan file names
-			Dictionary<string, string> newWorldPlans = new Dictionary<string, string>();
-
-			foreach (KeyValuePair<string, string> kvp in worldPlans)
-			{
-				newWorldPlans.Add(string.Format("{0}.pln", kvp.Key), kvp.Value);
-			}
-
-			worldPlans = newWorldPlans;
 
 			// Add the pln files to the dropdown
 			dd_PlanFile.Items.Clear();

@@ -1,5 +1,6 @@
 ![Zero World Stats preview](Resources/app_banner.png)
 
+[![Build Status](https://travis-ci.org/marth8880/ZeroWorldStats.svg?branch=master&maxAge=300)](https://travis-ci.org/marth8880/ZeroWorldStats)
 [![Issues](https://img.shields.io/github/issues/marth8880/ZeroWorldStats.svg?maxAge=60)](https://github.com/marth8880/ZeroMunge/issues)
 [![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg?label=license)](https://opensource.org/licenses/BSD-3-Clause)  
 [![Release](https://img.shields.io/github/release/marth8880/ZeroWorldStats.svg?label=latest%20release&maxAge=300)](https://github.com/marth8880/ZeroWorldStats/releases/latest)

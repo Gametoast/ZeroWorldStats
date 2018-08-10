@@ -55,6 +55,7 @@
     <Compile Include="Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
+    <Compile Include="Modules\ObjectChunk.cs" />
     <Compile Include="Modules\ObjectFileParser.cs" />
     <Compile Include="Modules\ReqChunk.cs" />
     <Compile Include="Modules\ReqParser.cs" />

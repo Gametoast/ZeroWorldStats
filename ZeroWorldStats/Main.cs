@@ -25,14 +25,14 @@ namespace ZeroWorldStats
 			public int regionCount;
 			public int planConnectionCount;
 			public int planHubCount;
-		};
+		}
 
 		public enum StringMatchType
 		{
 			StartsWith,
 			EndsWith,
 			Contains
-		};
+		}
 
 		#endregion Custom data types
 
@@ -155,7 +155,6 @@ namespace ZeroWorldStats
 			GetCPNamesAndPaths();
 
 			rtb_OutputLog.Clear();
-
 			foreach (KeyValuePair<string, string> kvp in cpNamesAndPaths)
 			{
 				string msg = string.Format("{0}: {1}\n", kvp.Key, kvp.Value);

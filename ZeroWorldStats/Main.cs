@@ -40,7 +40,7 @@ namespace ZeroWorldStats
 		#region Fields
 
 		public const string APP_NAME = "Zero World Stats";
-		public const string APP_VERSION = "0.1.0";
+		public const string APP_VERSION = "0.2.0";
 		public const string DROPDOWN_MODES_BASE = "[Base]";
 
 		public Counts counts = new Counts();
@@ -49,6 +49,7 @@ namespace ZeroWorldStats
 		public Dictionary<string, string> worldModes = new Dictionary<string, string>();
 		public Dictionary<string, string> worldLayers = new Dictionary<string, string>();
 		public Dictionary<string, string> worldPlans = new Dictionary<string, string>();
+		public Dictionary<string, string> cpNamesAndPaths = new Dictionary<string, string>();
 		public string selectedModeMrq = DROPDOWN_MODES_BASE;
 		public string selectedPlanFile;
 
@@ -146,6 +147,19 @@ namespace ZeroWorldStats
 			if (File.Exists(worldReqFilePath))
 			{
 				GetPlanHubCount();
+			}
+		}
+
+		private void btn_GetCPNamesAndPaths_Click(object sender, EventArgs e)
+		{
+			GetCPNamesAndPaths();
+
+			rtb_OutputLog.Clear();
+
+			foreach (KeyValuePair<string, string> kvp in cpNamesAndPaths)
+			{
+				string msg = string.Format("{0}: {1}\n", kvp.Key, kvp.Value);
+				rtb_OutputLog.Text += msg;
 			}
 		}
 
@@ -399,6 +413,37 @@ namespace ZeroWorldStats
 			}
 
 			SetCountLabel(lbl_PlanHubCnt, counts.planHubCount);
+		}
+
+		/// <summary>
+		/// Gets all of the CP names and their spawn paths from the specified object files.
+		/// </summary>
+		private void GetCPNamesAndPaths()
+		{
+			List<string> objectFiles = GetWorldChunkFilePaths(worldReqFilePath, worldModes[selectedModeMrq], new string[] { ".wld", ".lyr" });
+
+			cpNamesAndPaths.Clear();
+
+			foreach (string filePath in objectFiles)
+			{
+				List<ObjectChunk> objects = ObjectFileParser.GetObjectChunks(filePath);
+
+				if (objects.Count > 0)
+				{
+					// Add the CPs and their spawn paths to our Dictionary
+					foreach (ObjectChunk obj in objects)
+					{
+						// We're determining which objects are CPs by their name or if they have a SpawnPath param
+						if (obj.Parameters.ContainsKey("SpawnPath") || obj.ClassName.ToLower().Contains("controlzone"))
+						{
+							if (obj.Parameters.ContainsKey("SpawnPath"))
+							{
+								cpNamesAndPaths.Add(obj.ObjectName, obj.Parameters["SpawnPath"]);
+							}
+						}
+					}
+				}
+			}
 		}
 
 		/// <summary>

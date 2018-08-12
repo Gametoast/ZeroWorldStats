@@ -1,5 +1,5 @@
 Zero World Stats
-Version 0.1.0
+Version 0.2.0
 Created by Aaron Gilbert
 
 Installation

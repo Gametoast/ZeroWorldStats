@@ -11,7 +11,7 @@
 
 This is a tool for Star Wars Battlefront II (2005) modders to display various world stats such as object count, region count, and plan connection and hub count.
 
-![Zero World Stats preview](ReleaseImages/v0.1.0/01.png)
+![Zero World Stats preview](ReleaseImages/v0.2.0/01.png)
 
 ## Installation
 

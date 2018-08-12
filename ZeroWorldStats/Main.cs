@@ -115,6 +115,7 @@ namespace ZeroWorldStats
 			if (File.Exists(worldReqFilePath))
 			{
 				GetCounts();
+				GetCPNamesAndPaths();
 			}
 		}
 
@@ -152,13 +153,9 @@ namespace ZeroWorldStats
 
 		private void btn_GetCPNamesAndPaths_Click(object sender, EventArgs e)
 		{
-			GetCPNamesAndPaths();
-
-			rtb_OutputLog.Clear();
-			foreach (KeyValuePair<string, string> kvp in cpNamesAndPaths)
+			if (File.Exists(worldReqFilePath))
 			{
-				string msg = string.Format("{0}: {1}\n", kvp.Key, kvp.Value);
-				rtb_OutputLog.Text += msg;
+				GetCPNamesAndPaths();
 			}
 		}
 
@@ -422,6 +419,7 @@ namespace ZeroWorldStats
 			List<string> objectFiles = GetWorldChunkFilePaths(worldReqFilePath, worldModes[selectedModeMrq], new string[] { ".wld", ".lyr" });
 
 			cpNamesAndPaths.Clear();
+			rtb_OutputLog.Clear();
 
 			foreach (string filePath in objectFiles)
 			{
@@ -437,7 +435,16 @@ namespace ZeroWorldStats
 						{
 							if (obj.Parameters.ContainsKey("SpawnPath"))
 							{
-								cpNamesAndPaths.Add(obj.ObjectName, obj.Parameters["SpawnPath"]);
+								try
+								{
+									cpNamesAndPaths.Add(obj.ObjectName, obj.Parameters["SpawnPath"]);
+									rtb_OutputLog.Text += string.Format("{0}: {1}\n", obj.ObjectName, obj.Parameters["SpawnPath"]);
+								}
+								catch (ArgumentNullException ex)
+								{
+									Trace.WriteLine(ex.Message);
+									throw;
+								}
 							}
 						}
 					}

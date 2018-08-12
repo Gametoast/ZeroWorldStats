@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to Zero Munge will be documented in this file. Numbers enclosed in parentheses (#1) refer to [GitHub issues](https://github.com/marth8880/ZeroWorldStats/issues).
+All notable changes to Zero World Stats will be documented in this file. Numbers enclosed in parentheses (#1) refer to [GitHub issues](https://github.com/marth8880/ZeroWorldStats/issues).
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
